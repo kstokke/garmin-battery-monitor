@@ -5,11 +5,14 @@ low-battery alerts to an ntfy topic supplied on the command line.
 
 ## Daily GitHub Action
 
-1. Add a repository Actions secret named `GARMIN_API_KEY` containing the Garmin
-   personal API key (the value stored locally at `external/garmin` in gopass).
-2. Add a repository Actions variable named `NTFY_TOPIC` containing your ntfy.sh
-   topic name (without the server URL).
-3. Push the workflow and script to the repository's default branch.
+1. Under **Settings → Environments**, create or open the `Garmin` environment.
+2. Add an environment secret named `GARMIN_API_KEY` containing the Garmin personal
+   API key (the value stored locally at `external/garmin` in gopass).
+3. Add an environment variable named `NTFY_TOPIC` containing your ntfy.sh topic
+   name (without the server URL).
+4. Push the workflow and script to the repository's default branch.
+
+The workflow job references the `Garmin` environment to access these values.
 
 The workflow runs daily at 06:17 UTC with notifications enabled. You can also
 start it manually from **Actions → Garmin battery monitor → Run workflow**.

@@ -12,7 +12,9 @@ ntfy_topic = nil
 options = OptionParser.new do |parser|
   parser.banner = "Usage: #{File.basename($PROGRAM_NAME)} [--ntfy-topic TOPIC]"
   parser.on("--ntfy-topic TOPIC", "Send low-battery alerts to this ntfy.sh topic") do |topic|
-    abort "ntfy topic must contain only letters, numbers, underscores, or hyphens" unless topic.match?(/\A[A-Za-z0-9_-]+\z/)
+    topic = topic.strip
+    abort "ntfy topic is empty; supply --ntfy-topic TOPIC" if topic.empty?
+    abort "ntfy topic must be a topic name, without a URL, containing only letters, numbers, underscores, or hyphens" unless topic.match?(/\A[A-Za-z0-9_-]+\z/)
     ntfy_topic = topic
   end
 end

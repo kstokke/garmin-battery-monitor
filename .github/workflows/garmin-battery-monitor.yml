@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   monitor:
+    environment: Garmin
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -27,4 +28,9 @@ jobs:
         env:
           GARMIN_API_KEY: ${{ secrets.GARMIN_API_KEY }}
           NTFY_TOPIC: ${{ vars.NTFY_TOPIC }}
-        run: ruby garmin-battery-monitor.rb --ntfy-topic "$NTFY_TOPIC"
+        run: |
+          if [ -z "$NTFY_TOPIC" ]; then
+            echo "::error::Set the NTFY_TOPIC variable in the Garmin environment under Settings > Environments > Garmin."
+            exit 1
+          fi
+          ruby garmin-battery-monitor.rb --ntfy-topic "$NTFY_TOPIC"
