@@ -1,0 +1,30 @@
+name: Garmin battery monitor
+
+on:
+  schedule:
+    - cron: '17 6 * * *' # Daily at 06:17 UTC.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: garmin-battery-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+      - name: Check sensor batteries and notify
+        env:
+          GARMIN_API_KEY: ${{ secrets.GARMIN_API_KEY }}
+          NTFY_TOPIC: ${{ vars.NTFY_TOPIC }}
+        run: ruby garmin-battery-monitor.rb --ntfy-topic "$NTFY_TOPIC"
